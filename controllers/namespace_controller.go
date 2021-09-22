@@ -75,11 +75,11 @@ func (r *NamespaceReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 
 	// 2. update workload "deploy-inject" annotation in namespace
 	for _, deployment := range deployments.Items {
-		oldinjectValueInWorkload := deployment.Annotations[injectKey]
-		oldinjectValueInWorkloadTemplate := deployment.Spec.Template.Annotations[injectKey]
+		oldInjectValueInWorkload := deployment.Annotations[injectKey]
+		oldInjectValueInWorkloadTemplate := deployment.Spec.Template.Annotations[injectKey]
 		deployment.Annotations[injectKey] = injectValueInNs
 		deployment.Spec.Template.Annotations[injectKey] = injectValueInNs
-		if oldinjectValueInWorkload != injectValueInNs && oldinjectValueInWorkloadTemplate != injectValueInNs {
+		if oldInjectValueInWorkload != injectValueInNs && oldInjectValueInWorkloadTemplate != injectValueInNs {
 			logger.Info("=== Update deployment", "name", deployment.Name, "namespace", deployment.Namespace)
 		}
 		err = r.Update(context.TODO(), &deployment)
